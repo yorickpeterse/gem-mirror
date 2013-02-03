@@ -27,8 +27,14 @@ module GemMirror
     # @param [Gem::Requirement] requirement
     #
     def initialize(name, requirement = nil)
+      requirement ||= ::Gem::Requirement.default
+
+      if requirement.is_a?(String)
+        requirement = ::Gem::Requirement.new(requirement)
+      end
+
       @name        = name
-      @requirement = requirement || ::Gem::Requirement.default
+      @requirement = requirement
     end
 
     ##
@@ -42,7 +48,7 @@ module GemMirror
     # @return [TrueClass|FalseClass]
     #
     def has_version?
-      return version && version != '0.0.0'
+      return version && !version.segments.reject { |s| s == 0 }.empty?
     end
 
     ##

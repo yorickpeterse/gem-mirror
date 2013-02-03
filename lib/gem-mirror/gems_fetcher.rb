@@ -25,13 +25,7 @@ module GemMirror
     #
     def fetch
       source.gems.each do |gem|
-        if gem.has_version?
-          versions = [gem.version]
-        else
-         versions = versions_file.versions_for(gem.name)
-        end
-
-        versions.each do |version|
+        versions_for(gem).each do |version|
           filename  = gem.filename(version)
           satisfied = gem.requirement.satisfied_by?(version)
           name      = gem.name
@@ -66,6 +60,30 @@ module GemMirror
           end
         end
       end
+    end
+
+    ##
+    # Returns an Array containing the versions that should be fetched for a
+    # Gem.
+    #
+    # @param [GemMirror::Gem] gem
+    # @return [Array]
+    #
+    def versions_for(gem)
+      available       = versions_file.versions_for(gem.name)
+      versions        = gem.has_version? ? [gem.version] : available
+      available_names = available.map(&:to_s)
+
+      # Get rid of invalid versions. Due to Gem::Version having a custom ==
+      # method, which treats "3.4" the same as "3.4.0" we'll have to compare
+      # the versions as String instances.
+      versions = versions.select do |version|
+        available_names.include?(version.to_s)
+      end
+
+      versions = [available.last] if versions.empty?
+
+      return versions
     end
 
     ##
@@ -150,9 +168,22 @@ module GemMirror
     # @return [Array]
     #
     def dependencies_for(spec)
-      dependencies          = []
       possible_dependencies = configuration.development ? spec.dependencies \
         : spec.runtime_dependencies
+
+      dependencies = filter_dependencies(possible_dependencies)
+
+      return assign_gem_versions(dependencies)
+    end
+
+    ##
+    # Filters a list of dependencies based on whether or not they are ignored.
+    #
+    # @param [Array] possible_dependencies
+    # @return [Array]
+    #
+    def filter_dependencies(possible_dependencies)
+      dependencies = []
 
       possible_dependencies.each do |dependency|
         gem = Gem.new(dependency.name, dependency.requirement)
@@ -163,6 +194,26 @@ module GemMirror
       end
 
       return dependencies
+    end
+
+    ##
+    # Processes a list of Gems and sets their versions to the latest one
+    # available in case no specific version is given.
+    #
+    # @param [Array] gems
+    # @return [Array]
+    #
+    def assign_gem_versions(gems)
+      gems = gems.map do |gem|
+        unless gem.has_version?
+          latest = versions_file.versions_for(gem.name).last
+          gem    = Gem.new(gem.name, latest.to_s) if latest
+        end
+
+        gem
+      end
+
+      return gems
     end
 
     ##

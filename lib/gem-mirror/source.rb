@@ -75,7 +75,7 @@ module GemMirror
     # @param [String] requirement
     #
     def gem(name, requirement = nil)
-      gems << Gem.new(name, ::Gem::Requirement.new(requirement))
+      gems << Gem.new(name, requirement)
     end
 
     private
