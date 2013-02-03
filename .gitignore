@@ -1,0 +1,5 @@
+doc/build/
+!doc/build/.gitkeep
+
+Gemfile.lock
+pkg
