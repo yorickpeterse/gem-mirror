@@ -3,7 +3,7 @@ require File.expand_path('../lib/gem-mirror/version', __FILE__)
 Gem::Specification.new do |s|
   s.name        = 'gem-mirror'
   s.version     = GemMirror::VERSION
-  s.date        = '2012-02-03'
+  s.date        = '2012-02-04'
   s.authors     = ['Yorick Peterse']
   s.email       = 'yorickpeterse@gmail.com'
   s.summary     = 'Gem for easily creating your own RubyGems mirror.'
