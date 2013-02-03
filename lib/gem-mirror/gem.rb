@@ -39,6 +39,13 @@ module GemMirror
     end
 
     ##
+    # @return [TrueClass|FalseClass]
+    #
+    def has_version?
+      return version && version != '0.0.0'
+    end
+
+    ##
     # Returns the filename of the Gemfile.
     #
     # @param [String] gem_version

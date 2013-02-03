@@ -25,7 +25,13 @@ module GemMirror
     #
     def fetch
       source.gems.each do |gem|
-        versions_file.versions_for(gem.name).each do |version|
+        if gem.has_version?
+          versions = [gem.version]
+        else
+         versions = versions_file.versions_for(gem.name)
+        end
+
+        versions.each do |version|
           filename  = gem.filename(version)
           satisfied = gem.requirement.satisfied_by?(version)
           name      = gem.name
