@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'slop'
   s.add_dependency 'httpclient'
   s.add_dependency 'builder'
+  s.add_dependency 'confstruct'
 
   s.add_development_dependency 'yard'
   s.add_development_dependency 'redcarpet'
