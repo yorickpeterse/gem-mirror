@@ -27,7 +27,11 @@ module GemMirror
       source.gems.each do |gem|
         versions_for(gem).each do |version|
           filename  = gem.filename(version)
-          satisfied = gem.requirement.satisfied_by?(version)
+          begin
+            satisfied = gem.requirement.satisfied_by?(version)
+          rescue
+            logger.debug("Error determining is requirement satisfied for #{filename}")
+          end
           name      = gem.name
 
           if gem_exists?(filename) or ignore_gem?(name, version) or !satisfied

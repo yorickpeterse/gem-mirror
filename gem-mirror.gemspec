@@ -1,27 +1,28 @@
 require File.expand_path('../lib/gem-mirror/version', __FILE__)
 
-Gem::Specification.new do |s|
-  s.name        = 'gem-mirror'
-  s.version     = GemMirror::VERSION
-  s.date        = '2012-02-04'
-  s.authors     = ['Yorick Peterse']
-  s.email       = 'yorickpeterse@gmail.com'
-  s.summary     = 'Gem for easily creating your own RubyGems mirror.'
-  s.homepage    = 'https://github.com/yorickpeterse/gem-mirror'
-  s.description = s.summary
-  s.executables = ['gem-mirror']
+Gem::Specification.new do |spec|
+  spec.name        = 'gem-mirror'
+  spec.version     = GemMirror::VERSION
+  spec.date        = '2014-08-18'
+  spec.authors     = ['Yorick Peterse', 'Patrick Callahan']
+  spec.email       = ['yorickpeterse@gmail.com', 'pmc@patrickcallahan.com']
+  spec.summary     = 'Gem for easily creating your own RubyGems mirror.'
+  spec.homepage    = 'https://github.com/dirtyharrycallahan/gem-mirror'
+  spec.description = spec.summary
+  spec.executables = ['gem-mirror']
+  spec.licenses    = ['MIT']
 
-  s.files = File.read(File.expand_path('../MANIFEST', __FILE__)).split("\n")
+  spec.files = File.read(File.expand_path('../MANIFEST', __FILE__)).split("\n")
 
-  s.has_rdoc              = 'yard'
-  s.required_ruby_version = '>= 1.9.2'
+  spec.has_rdoc              = 'yard'
+  spec.required_ruby_version = '>= 1.9.3'
 
-  s.add_dependency 'slop'
-  s.add_dependency 'httpclient'
-  s.add_dependency 'builder'
-  s.add_dependency 'confstruct'
+  spec.add_runtime_dependency 'slop',       '~> 3.4', '>= 3.4.0'
+  spec.add_runtime_dependency 'httpclient', '~> 2.4', '>= 2.4.0'
+  spec.add_runtime_dependency 'builder',    '~> 3.0', '>= 3.0.0'
+  spec.add_runtime_dependency 'confstruct', '~> 0.2', '>= 0.2.0'
 
-  s.add_development_dependency 'yard'
-  s.add_development_dependency 'redcarpet'
-  s.add_development_dependency 'rake'
+  spec.add_development_dependency 'yard',      '~> 0.8', '>= 0.8.1'
+  spec.add_development_dependency 'redcarpet', '~> 3.1', '>= 3.1.0'
+  spec.add_development_dependency 'rake',      '~> 1.9'
 end

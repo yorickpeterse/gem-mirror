@@ -3,3 +3,4 @@ doc/build/
 
 Gemfile.lock
 pkg
+*.gem
