@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Namespace for GemMirror
 module GemMirror
   # Namespace for classes and modules that handle the command line interface
   module CLI

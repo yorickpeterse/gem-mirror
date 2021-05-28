@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Namespace for GemMirror
 module GemMirror
   ##
   # @return [GemMirror::Configuration]
