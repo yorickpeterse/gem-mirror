@@ -16,10 +16,11 @@ Gem::Specification.new do |s|
 
   s.email                 = ["pmc@patrickcallahan.com"]
   s.files                 = Dir["{assets,config,lib}/**/*"] + ["gem_mirror.gemspec"]
+  s.files                += %w[CHANGELOG.md LICENSE.txt README.md]
   s.require_paths         = ["lib"]
   s.bindir                = "exe"
   s.executables           = %w[gem_mirror]
-  s.extra_rdoc_files      = Dir["LICENSE.txt", "README.md"]
+  s.extra_rdoc_files      = %w[CHANGELOG.md LICENSE.txt README.md]
   s.homepage              = "https://github.com/dirtyharrycallahan/gem_mirror"
   s.licenses              = ["MIT"]
   s.summary               = %q{A tool for creating and managing a private rubygems mirror.}
@@ -29,7 +30,7 @@ Gem::Specification.new do |s|
   end
 
   s.rdoc_options += [
-    "--title", "gem_mirror - A Tool for Managing a Private Gem Repositor",
+    "--title", "gem_mirror - A Tool for Managing a Private Gem Repository",
     "--main", "README.md",
     "--line-numbers",
     "--inline-source",
