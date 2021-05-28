@@ -1,20 +1,22 @@
-GemMirror::CLI.options.command 'init' do
-  banner      'Usage: gem-mirror init [DIRECTORY] [OPTIONS]'
-  description 'Sets up a new mirror'
+# frozen_string_literal: true
+
+GemMirror::CLI.options.command "init" do
+  banner      "Usage: gem_mirror init [DIRECTORY] [OPTIONS]"
+  description "Sets up a new mirror"
   separator   "\nOptions:\n"
 
-  on :h, :help, 'Shows this help message' do
+  on :h, :help, "Shows this help message" do
     puts self
     exit
   end
 
-  run do |opts, args|
+  run do |_opts, args|
     directory = File.expand_path(args[0] || Dir.pwd)
     template  = GemMirror::Configuration.template_directory
 
     Dir.mkdir(directory) unless File.directory?(directory)
 
-    FileUtils.cp_r(File.join(template, '.'), directory)
+    FileUtils.cp_r(File.join(template, "."), directory)
 
     puts "Initialized empty mirror in #{directory}"
   end

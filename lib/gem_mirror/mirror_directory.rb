@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GemMirror
   ##
   # The MirrorDirectory is used for dealing with files and directories that are
@@ -27,7 +29,7 @@ module GemMirror
 
       Dir.mkdir(full_path) unless File.directory?(full_path)
 
-      return self.class.new(full_path)
+      self.class.new(full_path)
     end
 
     ##
@@ -43,7 +45,7 @@ module GemMirror
 
       file.write(content)
 
-      return file
+      file
     end
 
     ##
@@ -53,7 +55,7 @@ module GemMirror
     # @return [TrueClass|FalseClass]
     #
     def file_exists?(name)
-      return File.file?(File.join(path, name))
+      File.file?(File.join(path, name))
     end
-  end # MirrorDirectory
-end # GemMirror
+  end
+end

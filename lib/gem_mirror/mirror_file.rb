@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GemMirror
   ##
   # Similar to {GemMirror::MirrorDirectory} the MirrorFile class is used to
@@ -24,7 +26,7 @@ module GemMirror
     # @param [String] content
     #
     def write(content)
-      handle = File.open(path, 'w')
+      handle = File.open(path, "w")
 
       handle.write(content)
       handle.close
@@ -36,12 +38,12 @@ module GemMirror
     # @return [String]
     #
     def read
-      handle  = File.open(path, 'r')
+      handle  = File.open(path, "r")
       content = handle.read
 
       handle.close
 
-      return content
+      content
     end
 
     ##
@@ -57,7 +59,7 @@ module GemMirror
         gz.close
       end
 
-      return content
+      content
     end
-  end # MirrorFile
-end # GemMirror
+  end
+end

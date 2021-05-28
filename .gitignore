@@ -1,8 +1,39 @@
-doc/build/
-!doc/build/.gitkeep
+# checksums
 
-.yardoc
+/checksums/
 
+# rcov generated
+/coverage/
+coverage.data
+
+# rdoc generated
+/rdoc/
+
+# yard generated
+/doc
+/.yardoc/
+
+# bundler
+/.bundle/
 Gemfile.lock
-pkg
-*.gem
+Gemfile.local
+
+# rbenv
+.ruby-version
+
+# rspec
+#/spec/examples.txt
+#/.test_queue_stats
+
+/pkg/
+
+# For vim:
+*.swp
+
+# For bundle binstubs
+/bin/*
+
+# For stackprof or others
+/tmp/
+
+.ruby-version

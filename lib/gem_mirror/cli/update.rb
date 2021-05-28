@@ -1,16 +1,18 @@
-GemMirror::CLI.options.command 'update' do
-  banner      'Usage: gem-mirror update [OPTIONS]'
-  description 'Updates the list of Gems'
+# frozen_string_literal: true
+
+GemMirror::CLI.options.command "update" do
+  banner      "Usage: gem_mirror update [OPTIONS]"
+  description "Updates the list of Gems"
   separator   "\nOptions:\n"
 
-  on :h, :help, 'Shows this help message' do
+  on :h, :help, "Shows this help message" do
     puts self
     exit
   end
 
-  on :c=, :config=, 'Path to the configuration file'
+  on :c=, :config=, "Path to the configuration file"
 
-  run do |opts, args|
+  run do |opts, _args|
     GemMirror::CLI.load_configuration(opts[:c])
 
     GemMirror.configuration.sources.each do |source|

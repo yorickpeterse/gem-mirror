@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 module GemMirror
+  # Namespace for classes and modules that handle the command line interface
   module CLI
     ##
     # Hash containing the default Slop options.
@@ -6,15 +9,15 @@ module GemMirror
     # @return [Hash]
     #
     SLOP_OPTIONS = {
-      :strict => true,
-      :banner => 'Usage: gem-mirror [COMMAND] [OPTIONS]'
-    }
+      strict: true,
+      banner: "Usage: gem_mirror [COMMAND] [OPTIONS]"
+    }.freeze
 
     ##
     # @return [Slop]
     #
     def self.options
-      return @options ||= default_options
+      @options ||= default_options
     end
 
     ##
@@ -28,9 +31,7 @@ module GemMirror
       config_file ||= Configuration.default_configuration_file
       config_file   = File.expand_path(config_file, Dir.pwd)
 
-      unless File.file?(config_file)
-        abort "The configuration file #{config_file} does not exist"
-      end
+      abort "The configuration file #{config_file} does not exist" unless File.file?(config_file)
 
       require(config_file)
     end
@@ -39,15 +40,15 @@ module GemMirror
     # @return [Slop]
     #
     def self.default_options
-      return Slop.new(SLOP_OPTIONS.dup) do
+      Slop.new(SLOP_OPTIONS.dup) do
         separator "\nOptions:\n"
 
-        on :h, :help, 'Shows this help message' do
+        on :h, :help, "Shows this help message" do
           puts self
           exit
         end
 
-        on :v, :version, 'Shows the current version' do
+        on :v, :version, "Shows the current version" do
           puts CLI.version_information
         end
       end
@@ -59,7 +60,7 @@ module GemMirror
     # @return [String]
     #
     def self.version_information
-      return "gem-mirror v#{VERSION} on #{RUBY_DESCRIPTION}"
+      "gem_mirror v#{VERSION} on #{RUBY_DESCRIPTION}"
     end
-  end # CLI
-end # GemMirror
+  end
+end

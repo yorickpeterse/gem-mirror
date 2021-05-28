@@ -1,3 +1,4 @@
-source :rubygems
+# frozen_string_literal: true
 
-gemspec
+source "https://rubygems.org/"
+gemspec name: "gem_mirror"

@@ -1,12 +1,31 @@
-require 'rubygems/package_task'
+# frozen_string_literal: true
 
-GEMSPEC = Gem::Specification.load('gem-mirror.gemspec')
+require "bundler"
+require "bundler/gem_tasks"
+require "bundler/gem_helper"
+require "minitest"
+require "rake/clean"
+require "rake/testtask"
+require "rubocop/rake_task"
 
-Dir['./task/*.rake'].each do |task|
-  import(task)
-end
+Bundler::GemHelper.install_tasks name: "gem_mirror"
 
-Gem::PackageTask.new(GEMSPEC) do |pkg|
-  pkg.need_tar = false
-  pkg.need_zip = false
+RuboCop::RakeTask.new
+
+task default: %i[spec rubocop]
+
+# Include the "pkg" and "doc" directories and their contents.
+# Include all files ending in ".o" in the current directory
+# its subdirectories (recursively).
+CLOBBER.include(pkg, doc, "**/*.o")
+
+# Include InstalledFiles and .config: files created by setup.rb.
+# Include temporary files created during test run.
+CLEAN.include(InstalledFiles, .config, "test/**/*.tmp")
+
+require "yard"
+YARD::Rake::YardocTask.new do |t|
+  t.files   = ["lib/**/*.rb"]          # optional
+  t.options = ["--verbose"]            # optional
+  t.stats_options = ["--list-undoc"]   # optional
 end

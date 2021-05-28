@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 module GemMirror
   ##
   # @return [GemMirror::Configuration]
   #
   def self.configuration
-    return @configuration ||= Configuration.new
+    @configuration ||= Configuration.new
   end
 
   ##
@@ -15,21 +17,21 @@ module GemMirror
     # @return [Logger]
     #
     def logger
-      return @logger ||= Logger.new(STDOUT)
+      @logger ||= Logger.new($stdout)
     end
 
     ##
     # @return [String]
     #
     def self.template_directory
-      return File.expand_path('../../../template', __FILE__)
+      File.expand_path("../../template", __dir__)
     end
 
     ##
     # @return [String]
     #
     def self.default_configuration_file
-      return File.expand_path('config.rb', Dir.pwd)
+      File.expand_path("config.rb", Dir.pwd)
     end
 
     ##
@@ -39,7 +41,7 @@ module GemMirror
     # @return [String]
     #
     def self.marshal_identifier
-      return "Marshal.#{marshal_version}"
+      "Marshal.#{marshal_version}"
     end
 
     ##
@@ -48,7 +50,7 @@ module GemMirror
     # @return [String]
     #
     def self.versions_file
-      return "specs.#{marshal_version}.gz"
+      "specs.#{marshal_version}.gz"
     end
 
     ##
@@ -57,21 +59,21 @@ module GemMirror
     # @return [String]
     #
     def self.marshal_version
-      return "#{Marshal::MAJOR_VERSION}.#{Marshal::MINOR_VERSION}"
+      "#{Marshal::MAJOR_VERSION}.#{Marshal::MINOR_VERSION}"
     end
 
     ##
     # @return [GemMirror::MirrorDirectory]
     #
     def mirror_directory
-      return @mirror_directory ||= MirrorDirectory.new(gems_directory)
+      @mirror_directory ||= MirrorDirectory.new(gems_directory)
     end
 
     ##
     # @return [String]
     #
     def gems_directory
-      return File.join(destination, 'gems')
+      File.join(destination, "gems")
     end
 
     ##
@@ -80,7 +82,7 @@ module GemMirror
     # @return [Hash]
     #
     def ignored_gems
-      return @ignored_gems ||= Hash.new { |hash, key| hash[key] = [] }
+      @ignored_gems ||= Hash.new { |hash, key| hash[key] = [] }
     end
 
     ##
@@ -102,7 +104,7 @@ module GemMirror
     # @return [TrueClass|FalseClass]
     #
     def ignore_gem?(name, version)
-      return ignored_gems[name].include?(version)
+      ignored_gems[name].include?(version)
     end
 
     ##
@@ -111,7 +113,7 @@ module GemMirror
     # @return [Array]
     #
     def sources
-      return @sources ||= []
+      @sources ||= []
     end
 
     ##
@@ -128,5 +130,5 @@ module GemMirror
 
       sources << source
     end
-  end # Configuration
-end # GemMirror
+  end
+end

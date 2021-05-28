@@ -1,16 +1,18 @@
-GemMirror::CLI.options.command 'checksum' do
-  banner      'Usage: gem-mirror checksum [OPTIONS]'
-  description 'Generates SHA512 checksums of all gems'
+# frozen_string_literal: true
+
+GemMirror::CLI.options.command "checksum" do
+  banner      "Usage: gem_mirror checksum [OPTIONS]"
+  description "Generates SHA512 checksums of all gems"
   separator   "\nOptions:\n"
 
-  on :h, :help, 'Shows this help message' do
+  on :h, :help, "Shows this help message" do
     puts self
     exit
   end
 
-  on :c=, :config=, 'Path to the configuration file'
+  on :c=, :config=, "Path to the configuration file"
 
-  run do |opts, args|
+  run do |opts, _args|
     GemMirror::CLI.load_configuration(opts[:c])
 
     config = GemMirror.configuration
@@ -25,14 +27,14 @@ GemMirror::CLI.options.command 'checksum' do
       abort
     end
 
-    Dir[File.join(config.gems_directory, '*.gem')].each do |gem|
+    Dir[File.join(config.gems_directory, "*.gem")].each do |gem|
       basename = File.basename(gem)
-      name     = basename + '.sha512'
+      name     = "#{basename}.sha512"
 
       config.logger.info("Creating checksum for #{basename}")
 
       hash   = Digest::SHA512.hexdigest(File.read(gem))
-      handle = File.open(File.join(config.checksums, name), 'w')
+      handle = File.open(File.join(config.checksums, name), "w")
 
       handle.write(hash)
       handle.close
