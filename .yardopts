@@ -1,11 +1,10 @@
-./lib/gem-mirror/**/*.rb ./lib/gem-mirror.rb
--m markdown
--M redcarpet
--o ./doc/build
--r ./README.md
---private
---protected
+--charset UTF-8
+--readme README.md
+--hide-api private
+--markup markdown
+--markup-provider redcarpet
+--output-dir ./doc/build
 --asset ./doc/css/common.css:css/common.css
+./lib/**/*.rb
 -
-./doc/*.md
-LICENSE
+LICENSE.txt

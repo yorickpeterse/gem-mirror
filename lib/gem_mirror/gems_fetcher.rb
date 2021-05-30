@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GemMirror
   ##
   # The GemsFetcher class is responsible for downloading Gems from an external
@@ -26,15 +28,15 @@ module GemMirror
     def fetch
       source.gems.each do |gem|
         versions_for(gem).each do |version|
-          filename  = gem.filename(version)
+          filename = gem.filename(version)
           begin
             satisfied = gem.requirement.satisfied_by?(version)
-          rescue
+          rescue StandardError
             logger.debug("Error determining is requirement satisfied for #{filename}")
           end
-          name      = gem.name
+          name = gem.name
 
-          if gem_exists?(filename) or ignore_gem?(name, version) or !satisfied
+          if gem_exists?(filename) || ignore_gem?(name, version) || !satisfied
             logger.debug("Skipping #{filename}")
             next
           end
@@ -59,9 +61,7 @@ module GemMirror
 
           gemfile = fetch_gem(gem, version)
 
-          if gemfile
-            configuration.mirror_directory.add_file(filename, gemfile)
-          end
+          configuration.mirror_directory.add_file(filename, gemfile) if gemfile
         end
       end
     end
@@ -87,7 +87,7 @@ module GemMirror
 
       versions = [available.last] if versions.empty?
 
-      return versions
+      versions
     end
 
     ##
@@ -105,14 +105,14 @@ module GemMirror
 
       begin
         specification = source.fetch_specification(gem.name, version)
-      rescue => e
+      rescue StandardError => e
         logger.error("Failed to retrieve #{filename}: #{e.message}")
         logger.debug("Adding #{filename} to the list of ignored Gems")
 
         configuration.ignore_gem(gem.name, version)
       end
 
-      return specification
+      specification
     end
 
     ##
@@ -128,14 +128,14 @@ module GemMirror
 
       begin
         gemfile = source.fetch_gem(gem.name, version)
-      rescue => e
+      rescue StandardError => e
         logger.error("Failed to retrieve #{filename}: #{e.message}")
         logger.debug("Adding #{filename} to the list of ignored Gems")
 
         configuration.ignore_gem(gem.name, version)
       end
 
-      return gemfile
+      gemfile
     end
 
     ##
@@ -152,7 +152,7 @@ module GemMirror
       stream.finish
       stream.close
 
-      return Marshal.load(content)
+      Marshal.load(content)
     end
 
     ##
@@ -172,12 +172,15 @@ module GemMirror
     # @return [Array]
     #
     def dependencies_for(spec)
-      possible_dependencies = configuration.development ? spec.dependencies \
-        : spec.runtime_dependencies
+      possible_dependencies = if configuration.development
+                                spec.dependencies
+                              else
+                                spec.runtime_dependencies
+                              end
 
       dependencies = filter_dependencies(possible_dependencies)
 
-      return assign_gem_versions(dependencies)
+      assign_gem_versions(dependencies)
     end
 
     ##
@@ -192,12 +195,10 @@ module GemMirror
       possible_dependencies.each do |dependency|
         gem = Gem.new(dependency.name, dependency.requirement)
 
-        unless ignore_gem?(gem.name, gem.version)
-          dependencies << gem
-        end
+        dependencies << gem unless ignore_gem?(gem.name, gem.version)
       end
 
-      return dependencies
+      dependencies
     end
 
     ##
@@ -208,7 +209,7 @@ module GemMirror
     # @return [Array]
     #
     def assign_gem_versions(gems)
-      gems = gems.map do |gem|
+      gems.map do |gem|
         unless gem.has_version?
           latest = versions_file.versions_for(gem.name).last
           gem    = Gem.new(gem.name, latest.to_s) if latest
@@ -216,8 +217,6 @@ module GemMirror
 
         gem
       end
-
-      return gems
     end
 
     ##
@@ -225,14 +224,14 @@ module GemMirror
     # @return [Logger]
     #
     def logger
-      return configuration.logger
+      configuration.logger
     end
 
     ##
     # @see GemMirror.configuration
     #
     def configuration
-      return GemMirror.configuration
+      GemMirror.configuration
     end
 
     ##
@@ -242,14 +241,14 @@ module GemMirror
     # @return [TrueClass|FalseClass]
     #
     def gem_exists?(filename)
-      return configuration.mirror_directory.file_exists?(filename)
+      configuration.mirror_directory.file_exists?(filename)
     end
 
     ##
     # @see GemMirror::Configuration#ignore_gem?
     #
     def ignore_gem?(*args)
-      return configuration.ignore_gem?(*args)
+      configuration.ignore_gem?(*args)
     end
-  end # GemsFetcher
-end # GemMirror
+  end
+end

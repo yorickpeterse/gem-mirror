@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GemMirror
   ##
   # The Source class is used for storing information about an external source
@@ -19,8 +21,8 @@ module GemMirror
     # @param [Array] gems
     #
     def initialize(name, host, gems = [])
-      @name = name.downcase.gsub(/\s+/, '_')
-      @host = host.chomp('/')
+      @name = name.downcase.gsub(/\s+/, "_")
+      @host = host.chomp("/")
       @gems = gems
     end
 
@@ -31,7 +33,7 @@ module GemMirror
     # @return [Source]
     #
     def updated(new_gems)
-      return self.class.new(name, host, new_gems)
+      self.class.new(name, host, new_gems)
     end
 
     ##
@@ -40,7 +42,7 @@ module GemMirror
     # @return [String]
     #
     def fetch_versions
-      return http_get(host + '/' + Configuration.versions_file).body
+      http_get("#{host}/#{Configuration.versions_file}").body
     end
 
     ##
@@ -51,10 +53,10 @@ module GemMirror
     # @return [String]
     #
     def fetch_specification(name, version)
-      url = host + "/quick/#{Configuration.marshal_identifier}" +
-        "/#{name}-#{version}.gemspec.rz"
+      url = host + "/quick/#{Configuration.marshal_identifier}" \
+            "/#{name}-#{version}.gemspec.rz"
 
-      return http_get(url).body
+      http_get(url).body
     end
 
     ##
@@ -65,7 +67,7 @@ module GemMirror
     # @return [String]
     #
     def fetch_gem(name, version)
-      return http_get(host + "/gems/#{name}-#{version}.gem").body
+      http_get(host + "/gems/#{name}-#{version}.gem").body
     end
 
     ##
@@ -87,20 +89,18 @@ module GemMirror
     # @return [HTTP::Message]
     #
     def http_get(url)
-      response = client.get(url, :follow_redirect => true)
+      response = client.get(url, follow_redirect: true)
 
-      unless HTTP::Status.successful?(response.status)
-        raise HTTPClient::BadResponseError, response.reason
-      end
+      raise HTTPClient::BadResponseError, response.reason unless HTTP::Status.successful?(response.status)
 
-      return response
+      response
     end
 
     ##
     # @return [HTTPClient]
     #
     def client
-      return @client ||= HTTPClient.new
+      @client ||= HTTPClient.new
     end
-  end # Source
-end # GemMirror
+  end
+end

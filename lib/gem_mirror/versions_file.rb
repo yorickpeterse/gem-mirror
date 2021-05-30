@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GemMirror
   ##
   # The VersionsFile class acts as a small Ruby wrapper around the RubyGems
@@ -24,7 +26,7 @@ module GemMirror
 
       reader.close
 
-      return instance
+      instance
     end
 
     ##
@@ -48,7 +50,7 @@ module GemMirror
         hash[version[0]] << version
       end
 
-      return hash
+      hash
     end
 
     ##
@@ -58,7 +60,7 @@ module GemMirror
     # @return [Array]
     #
     def versions_for(gem)
-      return versions_hash[gem].map { |version| version[1] }
+      versions_hash[gem].map { |version| version[1] }
     end
-  end # VersionsFile
-end # GemMirror
+  end
+end

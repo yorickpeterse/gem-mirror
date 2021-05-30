@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GemMirror
   ##
   # The VersionsFetcher class is used for retrieving the file that contains all
@@ -24,7 +26,7 @@ module GemMirror
         "Updating #{source.name} (#{source.host})"
       )
 
-      return VersionsFile.load(source.fetch_versions)
+      VersionsFile.load(source.fetch_versions)
     end
-  end # VersionsFetcher
-end # GemMirror
+  end
+end

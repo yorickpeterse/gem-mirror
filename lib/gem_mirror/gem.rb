@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GemMirror
   ##
   # The Gem class contains data about a Gem such as the name, requirement as
@@ -19,7 +21,7 @@ module GemMirror
     # @return [Gem::Version]
     #
     def self.version_for(requirement)
-      return ::Gem::Version.new(requirement.requirements.sort.last.last.version)
+      ::Gem::Version.new(requirement.requirements.max.last.version)
     end
 
     ##
@@ -29,9 +31,7 @@ module GemMirror
     def initialize(name, requirement = nil)
       requirement ||= ::Gem::Requirement.default
 
-      if requirement.is_a?(String)
-        requirement = ::Gem::Requirement.new(requirement)
-      end
+      requirement = ::Gem::Requirement.new(requirement) if requirement.is_a?(String)
 
       @name        = name
       @requirement = requirement
@@ -41,14 +41,14 @@ module GemMirror
     # @return [Gem::Version]
     #
     def version
-      return @version ||= self.class.version_for(requirement)
+      @version ||= self.class.version_for(requirement)
     end
 
     ##
     # @return [TrueClass|FalseClass]
     #
     def has_version?
-      return version && !version.segments.reject { |s| s == 0 }.empty?
+      version && !version.segments.reject(&:zero?).empty?
     end
 
     ##
@@ -60,7 +60,7 @@ module GemMirror
     def filename(gem_version = nil)
       gem_version ||= version.to_s
 
-      return "#{name}-#{gem_version}.gem"
+      "#{name}-#{gem_version}.gem"
     end
-  end # Gem
-end # GemMirror
+  end
+end
