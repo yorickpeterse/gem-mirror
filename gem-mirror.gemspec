@@ -24,5 +24,6 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency 'yard',      '~> 0.9', '>= 0.9.12'
   spec.add_development_dependency 'redcarpet', '~> 3.4', '>= 3.4.0'
-  spec.add_development_dependency 'rake',      '~> 2.4'
+  spec.add_development_dependency "rake",      '>= 12.3.3'
+  
 end
