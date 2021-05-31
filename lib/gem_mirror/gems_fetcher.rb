@@ -75,7 +75,7 @@ module GemMirror
     #
     def versions_for(gem)
       available       = versions_file.versions_for(gem.name)
-      versions        = gem.has_version? ? [gem.version] : available
+      versions        = gem.version? ? [gem.version] : available
       available_names = available.map(&:to_s)
 
       # Get rid of invalid versions. Due to Gem::Version having a custom ==
@@ -210,7 +210,7 @@ module GemMirror
     #
     def assign_gem_versions(gems)
       gems.map do |gem|
-        unless gem.has_version?
+        unless gem.version?
           latest = versions_file.versions_for(gem.name).last
           gem    = Gem.new(gem.name, latest.to_s) if latest
         end

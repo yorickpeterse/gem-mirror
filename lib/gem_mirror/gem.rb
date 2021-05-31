@@ -47,7 +47,7 @@ module GemMirror
     ##
     # @return [TrueClass|FalseClass]
     #
-    def has_version?
+    def version?
       version && !version.segments.reject(&:zero?).empty?
     end
 
